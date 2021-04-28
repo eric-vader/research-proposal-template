@@ -1,6 +1,8 @@
 \documentclass[
-    ngerman,american
+    american,a4paper
     ]{scrartcl}
+    
+    \usepackage[a4paper,margin=2cm,includefoot]{geometry}
 
     % ##########################################
     % # Choose the language for the document by editing below line
@@ -15,8 +17,11 @@
     \usepackage{enumitem}
     \usepackage{ifthen}
     \usepackage{lipsum}
+    \usepackage{datetime}
+    \usepackage{amsfonts}
     
     \include{translatedHeadings}
+    \newcommand{\xmax}{x_{\max}} 
 
     \ifthenelse{\equal{en}{\lang}}
     {
@@ -51,7 +56,7 @@
         %  5. make people curious about your work
         %  6. use current buzzwords if possilbe (but do it right)
         %  7. not use too many buzzwords :-)
-        insert title here
+        Modern Bayesian Optimization
         % ##########################################
         \\  \Large{\paperSubTitle{\lang}}} % don't touch this line
 
@@ -60,15 +65,22 @@
         % # Your name goes here
         % ######
         % wWll, that should be obvious, right? 
-        Firstname Lastname
+        Han Liang Wee Eric\\
+        {\small PhD Student, NUS}
         % ##########################################
         }
-    
+    \date{\formatdate{28}{04}{2021}}
+    \pdfinfo
+    { /Title (Modern Bayesian Optimization)
+    /Author (Han Liang Wee Eric)
+    %  /CreationDate (D:YYYYMMDDhhmmss) % this is the format used by pdf for date/time
+    %  /Subject (...)
+    %  /Keywords ()
+    }
     \begin{document}
       \maketitle
         \begin{abstract}
 
-            \ifthenelse{\equal{en}{\lang}}{testen}{}
             % ##########################################
             % # Include your Abstract here 
             % ######
@@ -89,15 +101,73 @@
             % It should NOT be:
             %  - too long/verbose
             %  - too short
-            \lipsum[1-2]
+Bayesian Optimization (BO) has been successful (ie. AlphaGo) in addressing expensive low-dimensional black-box optimization in small continuous search spaces. 
+Modern application of machine learning often requires dealing with high-dimensional, often large datasets. 
+In addition, search spaces for these problems are not always continuous and are sometimes discrete.
+The research goal is to understand and propose methods to enable the successful application of BO in the digital age.
+In this paper, recent research experiences and future research direction is discussed.
+First, BO and its successes and motivation for this research are briefly discussed.
+Here, we also discuss one of the recent publications dealing with adapting BO to higher dimensions.
+Finally, we present one future research direction in adapting BO to discrete search spaces: combinatorial Bayesian Optimization.
             % ##########################################
 
         \end{abstract}
+
+        \section{Research Statement}
+
+        \paragraph{Introduction to Bayesian Optimization.}
+        Bayesian Optimization (BO) is a popular method for sequential global optimization, and is suited to situations in which the objective black-box function $f$ is expensive to evaluate \cite{snoek2012practical,mockus1994application}. 
+        For example, we consider finding $\xmax = \arg \max_{x \in {\mathcal X}} f(x)$ for some function $f$.
+        If $f$ is known and known/assumed to be convex, we can simply apply convex optimization. 
+        However, $f$ is not known exactly and/or evaluations expensive and/or noisy in many real problems such as hyperparameter optimization.
+        BO is able to overcome such conditions to find $\xmax$ with the \textit{least} possible number of observations by making two key assumptions:
+        model that will capture our prior beliefs on $f$ and acquisition function that can be inexpensively optimized.
+        BO translates the original problem to yet another optimization problem.
+        Gaussian Processes (GP) are commonly used as the surrogate because it allows us to model the prior and marginal log-likelihood.
+        \paragraph{Motivation.}
+        BO has found success in many areas; 
+        most notably in automatically tuning the game playing hyperparameters of AlphaGo \cite{chen2018bayesian}.
+        BO enhanced the playing power of AlphaGo while decreasing resources needed for manual tuning.
+        However, such success have been often found in low dimensional \cite{wang2013bayesian} continuous spaces \cite{7352306} with small datasets \cite{ambikasaran2015fast}.
+        \paragraph{Active Research.}
+        From the lines of inquiry, we discuss possible research directions below:
+        \begin{itemize}
+            \item \underline{Scaling to higher dimensions:} two approaches via making additional assumptions,
+            \begin{itemize}
+                \item \underline{Low effective dimensionality,} only few dimensions significantly affect $f$ \cite{chen2012joint}.
+                \item \underline{Additive structure,} small subsets of variables interact with each other \cite{kandasamy2015high}.
+            \end{itemize}
+            \item \underline{Adapting to discrete spaces:} various approaches to tackle the problem,
+            \begin{itemize}
+                \item \underline{Replace/adapt surrogate model} with random forests or another suitable model \cite{hutter2013evaluation}.
+                \item \underline{Introduce smoothness}, attempting to coerce discrete spaces into continous spaces \cite{oh2019combinatorial}.
+                \item \underline{Feature engineering}, through feature expansion of discrete with continous variables \cite{daxberger2019mixed}.
+            \end{itemize}
+            \item \underline{Scaling to more observations:} two common approaches,
+            \begin{itemize}
+                \item \underline{Replace surrogate model}, similar to above, with another suitable model \cite{hutter2011sequential}.
+                \item \underline{Introduce efficient matrix operations}, such as sparsification of covariance matrix \cite{seeger2003fast}.
+            \end{itemize}
+        \end{itemize}
+        We are also interested in other adjacent directions such as: improving the robustness of BO methods.
         
-        
-        \sectionQuestions{\lang}
-        \sectionQuestionsDescription{\lang}
-        
+        We recently discussed a method via the additive structure assumption \cite{han2020high}, 
+        where we facilitate faster model learning by \emph{reducing the model complexity} while retaining the \emph{sample-efficiency} of existing additive methods.
+        Specifically, we constrain the underlying additive structure to trees so we facilitate scalable learning of both the structure learning and optimization of the acquisition function.
+        We show that our method is competitive on datasets and the computation cab be significantly reduced while maintaining optimization performance.
+        \section{Research Proposal}
+        Here, we focus our discussion on adapting BO to discrete spaces. 
+        Most BO methods are focused on continuous search spaces due to the underlying assumption of using GPs as the prior, 
+        which relies on the smoothness defined by a kernel to model uncertainty. 
+        Real world problems can have a mix of both ordinal and categorical variables, presenting the following issues:
+        \begin{enumerate}
+            \item black-box objectives for which gradient-based optimizers are not amenable.
+            \item expensive evaluation procedures for which methods with low sample efficiency.
+            \item noisy and highly non-linear objectives for which simple and exact solutions are inaccurate.
+        \end{enumerate}
+        There have been attempts to adapt BO to this problem by simply using continuous kernels and augment the result to become discrete. 
+        However, some combinations of discrete variables are impossible configurations, and it is difficult for the model to capture.
+
         \begin{description}[style=unboxed]
             \item [\questionOne{\lang}] 
                 % ##########################################
@@ -124,7 +194,8 @@
                 % Please acknowledge: the answer to this question should not cover why the 
                 % problem is important or relevant to anyone (e.g. industry). This will 
                 % be addressed with the next question.
-                insert answer here
+                Combinatorial Bayesian Optimization, to extend BO to discrete spaces.
+                Our method should also work on mixed spaces, ie. both continuous and discrete spaces.
                 % ##########################################
 
             \item [\questionTwo{\lang}]
@@ -149,7 +220,14 @@
                 %  -- which conditions need to be fulfilled for the problem to occur?
                 %  -- etc.
                 %  - describe the benefit of having the problem resolved
-                insert answer here
+                Optimization in structured domains using BO was raised in \cite{NeurIPS2017};
+                BO has sample efficiency and global optimum convergence advantages when compared to other approaches such as evolution or genetic algorithms.
+                An application would be deciding on a deep neural network architecture where the parameters may depend on the number of layers \cite{bengio2009learning}.
+                There have been attempts to tackle this problem simply using continous kernels in BO, and augment the result to become discrete.
+                However, some combinations of discrete variables are impossible configurations which is difficult for the model to capture.
+                It faces the problem of combinatorial explosion, as instead of modelling the structural dependencies, 
+                BO embed the discrete variables into a $\mathbb{R}^d$ box.
+                These methods work, but heavily rely on the discretization.
                 % ##########################################
 
             \item [\questionThree{\lang}]
@@ -175,7 +253,12 @@
                 %  - if none of your ideas did not produce any usable solution, state 
                 %    so - these attempts are also results! By documenting them, it may 
                 %    prevent others from trying them as well. 
-                insert answer here
+                We focus on the important considerations of: allowing information sharing via encoding relationships between the variables (both discrete and continuous),
+                efficiently optimize the discrete variables (selection of the next discrete values) with high sample and computational efficiency,
+                encode the constraints between the variables, allowing the model to exploit them. 
+                We extend COMBO \cite{oh2019combinatorial}, where GP surrogate model is defined over the graph using Graph Fourier Transform (GFT).
+                Instead of using an ordered sub-graph for every continous variable, we do not discretize, considering the continous variables outside of the graph structure.
+                Treating them seprately, it might be possible to define a kernel grammar over continous and discrete variables.
                 % ##########################################
 
             \item [\questionFour{\lang}]
@@ -203,38 +286,12 @@
                 %  - clearly state the shortcomings of your work
                 %  -- be hones and objective about your own work. 
                 %  -- In which cases/scenarios are your results applicable?
-                include answer here
+                COMBO uses hamming distance on both continous and discrete variables; which works well on discrete variables.
+                Hamming distance is an unnatural metric on continous spaces, which should be instead modelled using a continous distribution.
+                There might be some penalty associated with GFT; such as performance issues, which might need to be addressed.
                 % ##########################################
         \end{description}
         
-        \sectionInitialTOC{\lang}
-        \sectionInitialTOCDescription{\lang}
-        
-        % ##########################################
-        % # Proposed table of contents
-        % ######
-        % The goal of this section is to propose a table of contents. Please keep in
-        % mind: a well created table of contents is very powerful in provide a good 
-        % overview of the overall chain of reasoning of your work. This makes it 
-        % extremely valuable.
-        % 
-        % Please include:
-        %  - names of sections and subsections (please don't go deeper than that unless 
-        %    your supervisor asks you for it)
-        %  - a brief description of the proposed content of each section and subsection
-        %    (1-3 sentences)
-        % 
-        \begin{enumerate}
-            \item \textbf{Section 1 Name} insert brief description
-                    \begin{enumerate}
-                        \item \textbf{Subsection 1 Name} insert brief description
-                        \item \textbf{Subsection 2 Name} insert brief description
-                    \end{enumerate}
-            \item \textbf{Section 2 Name} insert brief description
-        \end{enumerate}
-        % ##########################################
-    
-      
         \sectionSource{\lang}
         \sectionSourceDescription{\lang}
 
@@ -252,11 +309,17 @@
         %    your work (1-2 sentences)
         % 
         \begin{description}
-        \item[\cite{gruba_how_2017}] insert brief description
-        \item[\cite{zobel_writing_2015}] insert brief description
+            \item[\cite{pmlr-v124-swersky20a}] Use generative model to generate candidates for acquisition optimization.
+            \item[\cite{daxberger2019mixed}] Decouples the continuous and discrete components of the function using feature expansion.
+            \item[\cite{oh2019combinatorial}] Use a combinatorial graph to quantify smoothness on combinatorial search spaces.
+            \item[\cite{baptista2018bayesian}] Uses second order regression modelling of the interactions.
+            \item[\cite{pmlr-v70-jenatton17a}] Use a surrogate tree model where GPs are at the leafs.
         \end{description}
         % ##########################################
-        
-        
+      \newpage
+      \section*{Acknowledgements}
+      This template is adapted from \cite{Stefan2018}.
+      This work is done in collaboration with my PhD supervisor, Prof. Scarlett Jonathan. 
+      His patience and guidance are greatly appreciated.
       \printbibliography
     \end{document}
