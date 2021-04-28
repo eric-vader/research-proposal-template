@@ -100,6 +100,9 @@ It uses:
 - pdflatex - to generate a pdf document
 - biber - to process the bibliography
 
+pdflatex researchproposal.tex
+biber researchproposal
+
 Assuming you are familiar with LaTeX it should easily be set up. 
 
 ## <a name="FromScretchSetup"></a> Setup LaTeX Environment from Scratch
