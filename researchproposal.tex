@@ -101,14 +101,14 @@
             % It should NOT be:
             %  - too long/verbose
             %  - too short
-Bayesian Optimization (BO) has been successful (ie. AlphaGo) in addressing expensive low-dimensional black-box optimization in small continuous search spaces. 
-Modern application of machine learning often requires dealing with high-dimensional, often large datasets. 
-In addition, search spaces for these problems are not always continuous and are sometimes discrete.
-The research goal is to understand and propose methods to enable the successful application of BO in the digital age.
-In this paper, recent research experiences and future research direction is discussed.
-First, BO and its successes and motivation for this research are briefly discussed.
-Here, we also discuss one of the recent publications dealing with adapting BO to higher dimensions.
-Finally, we present one future research direction in adapting BO to discrete search spaces: combinatorial Bayesian Optimization.
+            Bayesian Optimization (BO) has been successful (i.e. AlphaGo) in addressing expensive low-dimensional black-box optimization in small continuous search spaces. 
+            Modern application of machine learning often requires dealing with high-dimensional, often large datasets. 
+            In addition, search spaces for these problems are not always continuous and are sometimes discrete.
+            The research goal is to understand and propose methods to enable the successful application of BO in the digital age.
+            In this paper, recent research experiences and future research direction is discussed.
+            First, BO and its successes and motivation for this research are briefly discussed.
+            Here, we also discuss one of the recent publications dealing with adapting BO to higher dimensions.
+            Finally, we present one future research direction in adapting BO to discrete search spaces: combinatorial Bayesian Optimization.
             % ##########################################
 
         \end{abstract}
@@ -120,8 +120,8 @@ Finally, we present one future research direction in adapting BO to discrete sea
         For example, we consider finding $\xmax = \arg \max_{x \in {\mathcal X}} f(x)$ for some function $f$.
         If $f$ is known and known/assumed to be convex, we can simply apply convex optimization. 
         However, $f$ is not known exactly and/or evaluations expensive and/or noisy in many real problems such as hyperparameter optimization.
-        BO is able to overcome such conditions to find $\xmax$ with the \textit{least} possible number of observations by making two key assumptions:
-        model that will capture our prior beliefs on $f$ and acquisition function that can be inexpensively optimized.
+        BO can overcome such conditions to find $\xmax$ with the \textit{least} possible number of observations by making two key assumptions:
+        surrogate model that will capture our prior beliefs on $f$ and acquisition function that can be inexpensively optimized.
         BO translates the original problem to yet another optimization problem.
         Gaussian Processes (GP) are commonly used as the surrogate because it allows us to model the prior and marginal log-likelihood.
         \paragraph{Motivation.}
@@ -149,17 +149,17 @@ Finally, we present one future research direction in adapting BO to discrete sea
                 \item \underline{Introduce efficient matrix operations}, such as sparsification of covariance matrix \cite{seeger2003fast}.
             \end{itemize}
         \end{itemize}
-        We are also interested in other adjacent directions such as: improving the robustness of BO methods.
+        We are also interested in other adjacent directions, such as: improving the robustness of BO methods.
         
         We recently discussed a method via the additive structure assumption \cite{han2020high}, 
         where we facilitate faster model learning by \emph{reducing the model complexity} while retaining the \emph{sample-efficiency} of existing additive methods.
-        Specifically, we constrain the underlying additive structure to trees so we facilitate scalable learning of both the structure learning and optimization of the acquisition function.
-        We show that our method is competitive on datasets and the computation cab be significantly reduced while maintaining optimization performance.
+        Specifically, we constrain the underlying additive structure to trees, so we facilitate scalable learning of the structure learning and optimization of the acquisition function.
+        We show that our method is competitive on datasets, and the computation can be significantly reduced while maintaining optimization performance.
         \section{Research Proposal}
         Here, we focus our discussion on adapting BO to discrete spaces. 
         Most BO methods are focused on continuous search spaces due to the underlying assumption of using GPs as the prior, 
         which relies on the smoothness defined by a kernel to model uncertainty. 
-        Real world problems can have a mix of both ordinal and categorical variables, presenting the following issues:
+        Real-world problems can have a mix of both ordinal and categorical variables, presenting the following issues, that BO is suited to solve:
         \begin{enumerate}
             \item black-box objectives for which gradient-based optimizers are not amenable.
             \item expensive evaluation procedures for which methods with low sample efficiency.
@@ -223,11 +223,11 @@ Finally, we present one future research direction in adapting BO to discrete sea
                 Optimization in structured domains using BO was raised in \cite{NeurIPS2017};
                 BO has sample efficiency and global optimum convergence advantages when compared to other approaches such as evolution or genetic algorithms.
                 An application would be deciding on a deep neural network architecture where the parameters may depend on the number of layers \cite{bengio2009learning}.
-                There have been attempts to tackle this problem simply using continous kernels in BO, and augment the result to become discrete.
-                However, some combinations of discrete variables are impossible configurations which is difficult for the model to capture.
+                There have been attempts to tackle this problem simply using continuous kernels in BO and augment the result to become discrete.
+                However, some combinations of discrete variables are impossible configurations that are complex for the model to capture.
                 It faces the problem of combinatorial explosion, as instead of modelling the structural dependencies, 
                 BO embed the discrete variables into a $\mathbb{R}^d$ box.
-                These methods work, but heavily rely on the discretization.
+                These methods work but heavily rely on discretization.
                 % ##########################################
 
             \item [\questionThree{\lang}]
@@ -253,12 +253,12 @@ Finally, we present one future research direction in adapting BO to discrete sea
                 %  - if none of your ideas did not produce any usable solution, state 
                 %    so - these attempts are also results! By documenting them, it may 
                 %    prevent others from trying them as well. 
-                We focus on the important considerations of: allowing information sharing via encoding relationships between the variables (both discrete and continuous),
+                We focus on the important considerations of: allowing information sharing via encoding relationships between the variables (both ordinal and categorical),
                 efficiently optimize the discrete variables (selection of the next discrete values) with high sample and computational efficiency,
                 encode the constraints between the variables, allowing the model to exploit them. 
                 We extend COMBO \cite{oh2019combinatorial}, where GP surrogate model is defined over the graph using Graph Fourier Transform (GFT).
-                Instead of using an ordered sub-graph for every continous variable, we do not discretize, considering the continous variables outside of the graph structure.
-                Treating them seprately, it might be possible to define a kernel grammar over continous and discrete variables.
+                Instead of using an ordered sub-graph for every continuous variable, we do not discretize, considering the continuous variables outside of the graph structure.
+                It might be possible to define a kernel grammar over continuous and discrete variables by treating them separately. 
                 % ##########################################
 
             \item [\questionFour{\lang}]
@@ -286,9 +286,9 @@ Finally, we present one future research direction in adapting BO to discrete sea
                 %  - clearly state the shortcomings of your work
                 %  -- be hones and objective about your own work. 
                 %  -- In which cases/scenarios are your results applicable?
-                COMBO uses hamming distance on both continous and discrete variables; which works well on discrete variables.
-                Hamming distance is an unnatural metric on continous spaces, which should be instead modelled using a continous distribution.
-                There might be some penalty associated with GFT; such as performance issues, which might need to be addressed.
+                COMBO uses hamming distance on both continuous and discrete variables, which works well on discrete variables.
+                Hamming distance is an unnatural metric on continuous spaces, which should be instead modelled using a continuous distribution.
+                There might be some penalty associated with GFT, such as performance issues, which might need to be addressed.
                 % ##########################################
         \end{description}
         
@@ -309,17 +309,34 @@ Finally, we present one future research direction in adapting BO to discrete sea
         %    your work (1-2 sentences)
         % 
         \begin{description}
-            \item[\cite{pmlr-v124-swersky20a}] Use generative model to generate candidates for acquisition optimization.
-            \item[\cite{daxberger2019mixed}] Decouples the continuous and discrete components of the function using feature expansion.
-            \item[\cite{oh2019combinatorial}] Use a combinatorial graph to quantify smoothness on combinatorial search spaces.
-            \item[\cite{baptista2018bayesian}] Uses second order regression modelling of the interactions.
-            \item[\cite{pmlr-v70-jenatton17a}] Use a surrogate tree model where GPs are at the leafs.
+            \item[\cite{pmlr-v124-swersky20a}] Use generative model to generate candidates for acquisition optimization. Implementation at \url{https://github.com/google-research/google-research/tree/master/amortized_bo}.
+            \item[\cite{daxberger2019mixed}] Decouples the continuous and discrete components of the function using feature expansion. No implementation published.
+            \item[\cite{oh2019combinatorial}] Use a combinatorial graph to quantify smoothness on combinatorial search spaces. Implementation at \url{https://github.com/QUVA-Lab/COMBO}.
+            \item[\cite{baptista2018bayesian}] Uses second order regression modelling of the interactions. Implementation at \url{https://github.com/baptistar/BOCS}.
+            \item[\cite{pmlr-v70-jenatton17a}] Use a surrogate tree model where GPs are at the leafs. No implementation published.
         \end{description}
+        Other related methods:
+        \begin{enumerate}
+            \item Traditional methods; generally not sample efficient and may not converge to global optimum (although sometimes, convergence is guaranteed).
+            \begin{enumerate}
+                \item Local search methods such as random optimization, hill climbing, simulated annealing, etc.
+                \item Evolutionary algorithms.
+            \end{enumerate}
+            \item Related BO methods; generally unable to handle general constraints over the discrete variables.
+            \begin{enumerate}
+                \item SMAC \cite{hutter2011sequential} is a BO that uses random forests as a surrogate model, which accommodates mixed variable inputs. However, there are limitations as the frequentist uncertainty estimate provided by random forests may suffer from variance degradation.
+                \item TPE \cite{bergstra2013making} uses a non-parametric kernel density estimator to identify inputs, likely to improve upon and unlikely to perform worse than the best input found so far.
+            \end{enumerate}
+            \item Hyperband \cite{li2017hyperband} is a variant of random search that exploits cheap but less accurate approximations of the objective to allocate resources for function evaluations dynamically.
+            \item BOHB \cite{falkner2018bohb} is the model-based counterpart of Hyperband, based on TPE.
+            \item Arc-Kernel \cite{swersky2014raiders} is a kernel designed to encode information about which parameters are relevant in a given structure. 
+        \end{enumerate}
         % ##########################################
-      \newpage
       \section*{Acknowledgements}
-      This template is adapted from \cite{Stefan2018}.
+      We adapted this research template from \cite{Stefan2018}.
       This work is done in collaboration with my PhD supervisor, Prof. Scarlett Jonathan. 
-      His patience and guidance are greatly appreciated.
+      His patience and guidance are greatly appreciated, without which the research would not be possible; 
+      to family and friends who are of great support.
+      \newpage
       \printbibliography
     \end{document}

@@ -152,3 +152,39 @@
 @InProceedings{pmlr-v124-swersky20a, title = {Amortized Bayesian Optimization over Discrete Spaces}, author = {Swersky, Kevin and Rubanova, Yulia and Dohan, David and Murphy, Kevin}, booktitle = {Proceedings of the 36th Conference on Uncertainty in Artificial Intelligence (UAI)}, pages = {769--778}, year = {2020}, editor = {Jonas Peters and David Sontag}, volume = {124}, series = {Proceedings of Machine Learning Research}, month = {03--06 Aug}, publisher = {PMLR}, pdf = {http://proceedings.mlr.press/v124/swersky20a/swersky20a.pdf}, url = { http://proceedings.mlr.press/v124/swersky20a.html }, abstract = {Bayesian optimization is a principled approach for globally optimizing expensive, black-box functions by using a surrogate model of the objective. However, each step of Bayesian optimization involves solving an inner optimization problem, in which we maximize an acquisition function derived from the surrogate model to decide where to query next. This inner problem can be challenging to solve, particularly in discrete spaces, such as protein sequences or molecular graphs, where gradient-based optimization cannot be used. Our key insight is that we can train a generative model to generate candidates that maximize the acquisition function. This is faster than standard model-free local search methods, since we can amortize the cost of learning the model across multiple rounds of Bayesian optimization. We therefore call this Amortized Bayesian Optimization. On several challenging discrete design problems, we show this method generally outperforms other methods at optimizing the inner acquisition function, resulting in more efficient optimization of the outer black-box objective.} }
 
 @InProceedings{pmlr-v70-jenatton17a, title = {{B}ayesian Optimization with Tree-structured Dependencies}, author = {Rodolphe Jenatton and Cedric Archambeau and Javier Gonz{\'a}lez and Matthias Seeger}, booktitle = {Proceedings of the 34th International Conference on Machine Learning}, pages = {1655--1664}, year = {2017}, editor = {Precup, Doina and Teh, Yee Whye}, volume = {70}, series = {Proceedings of Machine Learning Research}, month = {06--11 Aug}, publisher = {PMLR}, pdf = {http://proceedings.mlr.press/v70/jenatton17a/jenatton17a.pdf}, url = { http://proceedings.mlr.press/v70/jenatton17a.html }, abstract = {Bayesian optimization has been successfully used to optimize complex black-box functions whose evaluations are expensive. In many applications, like in deep learning and predictive analytics, the optimization domain is itself complex and structured. In this work, we focus on use cases where this domain exhibits a known dependency structure. The benefit of leveraging this structure is twofold: we explore the search space more efficiently and posterior inference scales more favorably with the number of observations than Gaussian Process-based approaches published in the literature. We introduce a novel surrogate model for Bayesian optimization which combines independent Gaussian Processes with a linear model that encodes a tree-based dependency structure and can transfer information between overlapping decision sequences. We also design a specialized two-step acquisition function that explores the search space more effectively. Our experiments on synthetic tree-structured functions and the tuning of feedforward neural networks trained on a range of binary classification datasets show that our method compares favorably with competing approaches.} }
+
+@inproceedings{bergstra2013making,
+  title={Making a science of model search: Hyperparameter optimization in hundreds of dimensions for vision architectures},
+  author={Bergstra, James and Yamins, Daniel and Cox, David},
+  booktitle={International conference on machine learning},
+  pages={115--123},
+  year={2013},
+  organization={PMLR}
+}
+
+@article{li2017hyperband,
+  title={Hyperband: A novel bandit-based approach to hyperparameter optimization},
+  author={Li, Lisha and Jamieson, Kevin and DeSalvo, Giulia and Rostamizadeh, Afshin and Talwalkar, Ameet},
+  journal={The Journal of Machine Learning Research},
+  volume={18},
+  number={1},
+  pages={6765--6816},
+  year={2017},
+  publisher={JMLR. org}
+}
+
+@inproceedings{falkner2018bohb,
+  title={BOHB: Robust and efficient hyperparameter optimization at scale},
+  author={Falkner, Stefan and Klein, Aaron and Hutter, Frank},
+  booktitle={International Conference on Machine Learning},
+  pages={1437--1446},
+  year={2018},
+  organization={PMLR}
+}
+
+@article{swersky2014raiders,
+  title={Raiders of the lost architecture: Kernels for Bayesian optimization in conditional parameter spaces},
+  author={Swersky, Kevin and Duvenaud, David and Snoek, Jasper and Hutter, Frank and Osborne, Michael A},
+  journal={arXiv preprint arXiv:1409.4011},
+  year={2014}
+}
